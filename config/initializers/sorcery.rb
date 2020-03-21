@@ -7,7 +7,8 @@
 # :reset_password, :session_timeout, :brute_force_protection, :activity_logging,
 # :magic_login, :external
 
-Rails.application.config.sorcery.submodules = %i[core remember_me brute_force_protection activity_logging external]
+Rails.application.config.sorcery.submodules = %i[core remember_me brute_force_protection activity_logging external
+                                                 user_activation reset_password]
 
 # Here you can configure each submodule's features.
 Rails.application.config.sorcery.configure do |config|
@@ -117,12 +118,11 @@ Rails.application.config.sorcery.configure do |config|
   #
   config.facebook.key = ENV['FACEBOOK_KEY']
   config.facebook.secret = ENV['FACEBOOK_SECRET']
-  config.facebook.callback_url = 'http://localhost:3000/oauth/callback?provider=facebook'
-  config.facebook.user_info_mapping = { email: 'email', first_name: 'name' }
-  config.facebook.scope = 'email'
+  config.facebook.callback_url = 'https://thinkiny.pp.ua/oauth/callback?provider=facebook'
+  config.facebook.user_info_mapping = { email: 'email', first_name: 'name', picture: 'image' }
   config.facebook.display = 'popup'
-  #config.facebook.api_version = "v2.3"
-  #config.facebook.parse = :json
+  # config.facebook.api_version = "v2.3"
+  # config.facebook.parse = :json
   #
   # config.instagram.key = ""
   # config.instagram.secret = ""
@@ -154,12 +154,12 @@ Rails.application.config.sorcery.configure do |config|
   #
   config.google.key = ENV['GOOGLE_KEY']
   config.google.secret = ENV['GOOGLE_SECRET']
-  config.google.callback_url = 'http://thinkiny.ddns.net/oauth/callback?provider=google'
+  config.google.callback_url = 'http://thinkiny.pp.ua/oauth/callback?provider=google'
   config.google.user_info_mapping = {
     email: 'email',
     first_name: 'given_name',
     last_name: 'family_name',
-    picture: 'picture'
+    picture: 'image'
   }
   # For Microsoft Graph, the key will be your App ID, and the secret will be your app password/public key.
   # The callback URL "can't contain a query string or invalid special characters"
@@ -321,7 +321,7 @@ Rails.application.config.sorcery.configure do |config|
     # User activation mailer class.
     # Default: `nil`
     #
-    # user.user_activation_mailer =
+    user.user_activation_mailer = UserMailer
 
     # When true, sorcery will not automatically
     # send the activation details email, and allow you to
@@ -349,7 +349,7 @@ Rails.application.config.sorcery.configure do |config|
     # Do you want to prevent users who did not activate by email from logging in?
     # Default: `true`
     #
-    # user.prevent_non_active_users_to_login =
+    user.prevent_non_active_users_to_login = false
 
     # -- reset_password --
     # Password reset token attribute name.
@@ -371,7 +371,7 @@ Rails.application.config.sorcery.configure do |config|
     # Password reset mailer class.
     # Default: `nil`
     #
-    # user.reset_password_mailer =
+    user.reset_password_mailer = UserMailer
 
     # Reset password email method on your mailer class.
     # Default: `:reset_password_email`
