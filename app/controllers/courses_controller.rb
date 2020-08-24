@@ -9,21 +9,22 @@ class CoursesController < ApplicationController
 
   def index
     @categories = Category.all
+    @courses = Course.includes([:categories]).all
     @courses = case params[:sort]
                when 'oldest'
-                 Course.includes([:categories]).all.newest
+                 @courses.newest
                when 'popular'
-                 Course.includes([:categories]).all.popular
+                 @courses.popular
                when 'unpopular'
-                 Course.includes([:categories]).all.unpopular
+                 @courses.unpopular
                when 'fresh'
-                 Course.includes([:categories]).all.fresh
+                 @courses.fresh
                when 'in_process'
-                 Course.includes([:categories]).all.in_process
+                 @courses.in_process
                when 'completed'
-                 Course.includes([:categories]).all.completed
+                 @courses.completed
                when 'rated'
-                 Course.includes([:categories]).all.rated
+                 @courses.rated
                else
                  if params[:category_id]
                    @category = Category.find(params[:category_id])
